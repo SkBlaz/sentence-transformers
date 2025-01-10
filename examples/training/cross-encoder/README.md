@@ -9,28 +9,30 @@ See the following examples how to train Cross-Encoders:
 
 ## Training CrossEncoders
 
-The `CrossEncoder` class is a wrapper around Huggingface `AutoModelForSequenceClassification`, but with some methods to make training and predicting scores a little bit easier. The saved models are 100% compatible with Huggingface and can also be loaded with their classes.
+The `CrossEncoder` class is a wrapper around Hugging Face `AutoModelForSequenceClassification`, but with some methods to make training and predicting scores a little bit easier. The saved models are 100% compatible with Hugging Face and can also be loaded with their classes.
 
 First, you need some sentence pair data. You can either have a continuous score, like:
 ```python
 from sentence_transformers import InputExample
+
 train_samples = [
-  InputExample(texts=['sentence1', 'sentence2'], label=0.3),
-  InputExample(texts=['Another', 'pair'], label=0.8),
+    InputExample(texts=["sentence1", "sentence2"], label=0.3),
+    InputExample(texts=["Another", "pair"], label=0.8),
 ]
 ```
 
 Or you have distinct classes as in the [training_nli.py](training_nli.py) example:
 ```python
 from sentence_transformers import InputExample
+
 label2int = {"contradiction": 0, "entailment": 1, "neutral": 2}
 train_samples = [
-  InputExample(texts=['sentence1', 'sentence2'], label=label2int['neutral']),
-  InputExample(texts=['Another', 'pair'], label=label2int['entailment']),
+    InputExample(texts=["sentence1", "sentence2"], label=label2int["neutral"]),
+    InputExample(texts=["Another", "pair"], label=label2int["entailment"]),
 ]
 ```
 
-Then, you define the base model and the number of labels. You can take any [Huggingface pre-trained model](https://huggingface.co/transformers/pretrained_models.html) that is compatible with AutoModel:
+Then, you define the base model and the number of labels. You can take any [Hugging Face pre-trained model](https://huggingface.co/transformers/pretrained_models.html) that is compatible with AutoModel:
 ```
 model = CrossEncoder('distilroberta-base', num_labels=1)
 ```
@@ -39,11 +41,13 @@ For binary tasks and tasks with continuous scores (like STS), we set num_labels=
 
 We start the training by calling `model.fit()`:
 ```python
-model.fit(train_dataloader=train_dataloader,
-          evaluator=evaluator,
-          epochs=num_epochs,
-          warmup_steps=warmup_steps,
-          output_path=model_save_path)
+model.fit(
+    train_dataloader=train_dataloader,
+    evaluator=evaluator,
+    epochs=num_epochs,
+    warmup_steps=warmup_steps,
+    output_path=model_save_path,
+)
 ```
 
 

@@ -1,29 +1,31 @@
+from __future__ import annotations
+
 import logging
+
 import tqdm
 
+
 class LoggingHandler(logging.Handler):
-    def __init__(self, level=logging.NOTSET):
+    def __init__(self, level=logging.NOTSET) -> None:
         super().__init__(level)
 
-    def emit(self, record):
+    def emit(self, record) -> None:
         try:
             msg = self.format(record)
             tqdm.tqdm.write(msg)
             self.flush()
         except (KeyboardInterrupt, SystemExit):
             raise
-        except:
+        except Exception:
             self.handleError(record)
 
 
-def install_logger(
-    given_logger, level = logging.WARNING, fmt="%(levelname)s:%(name)s:%(message)s"
-):
-    """ Configures the given logger; format, logging level, style, etc """
+def install_logger(given_logger, level=logging.WARNING, fmt="%(levelname)s:%(name)s:%(message)s") -> None:
+    """Configures the given logger; format, logging level, style, etc"""
     import coloredlogs
 
     def add_notice_log_level():
-        """ Creates a new 'notice' logging level """
+        """Creates a new 'notice' logging level"""
         # inspired by:
         # https://stackoverflow.com/questions/2183233/how-to-add-a-custom-loglevel-to-pythons-logging-facility
         NOTICE_LEVEL_NUM = 25

@@ -8,8 +8,11 @@ The training data consists of over 500k examples, while the complete corpus cons
 Pre-trained models can be used like this:
 ```python
 from sentence_transformers import CrossEncoder
-model = CrossEncoder('model_name', max_length=512)
-scores = model.predict([('Query', 'Paragraph1'), ('Query', 'Paragraph2') , ('Query', 'Paragraph3')])
+
+model = CrossEncoder("model_name", max_length=512)
+scores = model.predict(
+    [("Query", "Paragraph1"), ("Query", "Paragraph2"), ("Query", "Paragraph3")]
+)
 ```
 
 ## Usage with Transformers
@@ -18,10 +21,10 @@ scores = model.predict([('Query', 'Paragraph1'), ('Query', 'Paragraph2') , ('Que
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 
-model = AutoModelForSequenceClassification.from_pretrained('model_name')
-tokenizer = AutoTokenizer.from_pretrained('model_name')
+model = AutoModelForSequenceClassification.from_pretrained("model_name")
+tokenizer = AutoTokenizer.from_pretrained("model_name")
 
-features = tokenizer(['Query', 'Query'], ['Paragraph1', 'Paragraph2'],  padding=True, truncation=True, return_tensors="pt")
+features = tokenizer(["Query", "Query"], ["Paragraph1", "Paragraph2"], padding=True, truncation=True, return_tensors="pt")
 
 model.eval()
 with torch.no_grad():
@@ -56,4 +59,4 @@ In the following table, we provide various pre-trained Cross-Encoders together w
 | amberoad/bert-multilingual-passage-reranking-msmarco | 68.40 | 35.54 | 330 |  
 | sebastian-hofstaetter/distilbert-cat-margin_mse-T2-msmarco | 72.82 | 37.88 | 720
  
- Note: Runtime was computed on a V100 GPU with Huggingface Transformers v4. 
+ Note: Runtime was computed on a V100 GPU with Hugging Face Transformers v4. 

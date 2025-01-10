@@ -1,8 +1,10 @@
-import random
+from __future__ import annotations
+
 import math
+import random
+
 
 class NoDuplicatesDataLoader:
-
     def __init__(self, train_examples, batch_size):
         """
         A special data loader to be used with MultipleNegativesRankingLoss.

@@ -25,21 +25,21 @@ As detailed in our [paper](https://arxiv.org/abs/1908.10084), Cross-Encoder achi
 Cross-Encoders can be used whenever you have a pre-defined set of sentence pairs you want to score. For example, you have 100 sentence pairs and you want to get similarity scores for these 100 pairs.
 
 
-Bi-Encoders (see [Computing Sentence Embeddings](../computing-embeddings/README.md)) are used whenever you need a sentence embedding in a vector space for efficient comparison. Applications are for example Information Retrieval / Semantic Search or Clustering. Cross-Encoders would be the wrong choice for these application: Clustering 10,000 sentence with CrossEncoders would require computing similarity scores for about 50 Million sentence combinations, which takes about 65 hours. With a Bi-Encoder, you compute the embedding for each sentence, which takes only 5 seconds. You can then perform the clustering.
+Bi-Encoders (see [Computing Sentence Embeddings](../computing-embeddings/README.rst)) are used whenever you need a sentence embedding in a vector space for efficient comparison. Applications are for example Information Retrieval / Semantic Search or Clustering. Cross-Encoders would be the wrong choice for these application: Clustering 10,000 sentence with CrossEncoders would require computing similarity scores for about 50 Million sentence combinations, which takes about 65 hours. With a Bi-Encoder, you compute the embedding for each sentence, which takes only 5 seconds. You can then perform the clustering.
 
 
 ## Cross-Encoders Usage
 Using Cross-Encoders is quite easy:
 ```python
 from sentence_transformers.cross_encoder import CrossEncoder
-model = CrossEncoder('model_name_or_path')
-scores = model.predict([["My first", "sentence pair"],  
-                        ["Second text", "pair"]])
+
+model = CrossEncoder("model_name_or_path")
+scores = model.predict([["My first", "sentence pair"], ["Second text", "pair"]])
 ```
 
 You pass to `model.predict` a list of sentence **pairs**. Note, Cross-Encoder do not work on individual sentence, you have to pass sentence pairs.
 
-As model name, you can pass any model or path that is compatible with Huggingface [AutoModel](https://huggingface.co/transformers/model_doc/auto.html) class
+As model name, you can pass any model or path that is compatible with Hugging Face [AutoModel](https://huggingface.co/transformers/model_doc/auto.html) class
 
 
 For a full example, to score a query with all possible sentences in a corpus see [cross-encoder_usage.py](cross-encoder_usage.py).
