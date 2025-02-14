@@ -1,13 +1,27 @@
-from . import InputExample
-import csv
-import gzip
+"""
+This file contains deprecated code that can only be used with the old `model.fit`-style Sentence Transformers v2.X training.
+It exists for backwards compatibility with the `model.old_fit` method, but will be removed in a future version.
+
+Nowadays, with Sentence Transformers v3+, it is recommended to use the `SentenceTransformerTrainer` class to train models.
+See https://www.sbert.net/docs/sentence_transformer/training_overview.html for more information.
+
+Instead, you should create a `datasets` `Dataset` for training: https://huggingface.co/docs/datasets/create_dataset
+"""
+
+from __future__ import annotations
+
 import os
+
+from . import InputExample
+
 
 class LabelSentenceReader:
     """Reads in a file that has at least two columns: a label and a sentence.
     This reader can for example be used with the BatchHardTripletLoss.
-    Maps labels automatically to integers"""
-    def __init__(self, folder, label_col_idx=0, sentence_col_idx=1, separator='\t'):
+    Maps labels automatically to integers
+    """
+
+    def __init__(self, folder, label_col_idx=0, sentence_col_idx=1, separator="\t"):
         self.folder = folder
         self.label_map = {}
         self.label_col_idx = label_col_idx

@@ -1,8 +1,5 @@
-from enum import Enum
+from __future__ import annotations
 
-class SimilarityFunction(Enum):
-    COSINE = 0
-    EUCLIDEAN = 1
-    MANHATTAN = 2
-    DOT_PRODUCT = 3
+from sentence_transformers.similarity_functions import SimilarityFunction
 
+__all__ = ["SimilarityFunction"]

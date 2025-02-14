@@ -1,12 +1,15 @@
+from __future__ import annotations
+
+import csv
 import logging
 import os
-import csv
-from typing import List
-from ... import InputExample
+
 import numpy as np
 
+from sentence_transformers import InputExample
 
 logger = logging.getLogger(__name__)
+
 
 class CEBinaryAccuracyEvaluator:
     """
@@ -17,18 +20,26 @@ class CEBinaryAccuracyEvaluator:
 
     See CEBinaryClassificationEvaluator for an evaluator that determines automatically the optimal threshold.
     """
-    def __init__(self, sentence_pairs: List[List[str]], labels: List[int], name: str='', threshold: float = 0.5, write_csv: bool = True):
+
+    def __init__(
+        self,
+        sentence_pairs: list[list[str]],
+        labels: list[int],
+        name: str = "",
+        threshold: float = 0.5,
+        write_csv: bool = True,
+    ):
         self.sentence_pairs = sentence_pairs
         self.labels = labels
         self.name = name
         self.threshold = threshold
 
-        self.csv_file = "CEBinaryAccuracyEvaluator" + ("_" + name if name else '') + "_results.csv"
+        self.csv_file = "CEBinaryAccuracyEvaluator" + ("_" + name if name else "") + "_results.csv"
         self.csv_headers = ["epoch", "steps", "Accuracy"]
         self.write_csv = write_csv
 
     @classmethod
-    def from_input_examples(cls, examples: List[InputExample], **kwargs):
+    def from_input_examples(cls, examples: list[InputExample], **kwargs):
         sentence_pairs = []
         labels = []
 
@@ -40,9 +51,9 @@ class CEBinaryAccuracyEvaluator:
     def __call__(self, model, output_path: str = None, epoch: int = -1, steps: int = -1) -> float:
         if epoch != -1:
             if steps == -1:
-                out_txt = " after epoch {}:".format(epoch)
+                out_txt = f" after epoch {epoch}:"
             else:
-                out_txt = " in epoch {} after {} steps:".format(epoch, steps)
+                out_txt = f" in epoch {epoch} after {steps} steps:"
         else:
             out_txt = ":"
 
@@ -54,12 +65,12 @@ class CEBinaryAccuracyEvaluator:
 
         acc = np.sum(pred_labels == self.labels) / len(self.labels)
 
-        logger.info("Accuracy: {:.2f}".format(acc*100))
+        logger.info(f"Accuracy: {acc * 100:.2f}")
 
         if output_path is not None and self.write_csv:
             csv_path = os.path.join(output_path, self.csv_file)
             output_file_exists = os.path.isfile(csv_path)
-            with open(csv_path, mode="a" if output_file_exists else 'w', encoding="utf-8") as f:
+            with open(csv_path, mode="a" if output_file_exists else "w", encoding="utf-8") as f:
                 writer = csv.writer(f)
                 if not output_file_exists:
                     writer.writerow(self.csv_headers)

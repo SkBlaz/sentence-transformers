@@ -1,0 +1,102 @@
+[project]
+name = "sentence-transformers"
+version = "3.5.0.dev0"
+description = "State-of-the-Art Text Embeddings"
+license = { text = "Apache 2.0" }
+readme = "README.md"
+authors = [
+    { name = "Nils Reimers", email = "info@nils-reimers.de" },
+    { name = "Tom Aarsen", email = "tom.aarsen@huggingface.co" },
+]
+maintainers = [
+    { name = "Tom Aarsen", email = "tom.aarsen@huggingface.co" }
+]
+requires-python = ">=3.9"
+keywords = [
+    "Transformer Networks",
+    "BERT",
+    "XLNet",
+    "sentence embedding",
+    "PyTorch",
+    "NLP",
+    "deep learning",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "transformers>=4.41.0,<5.0.0",
+    "tqdm",
+    "torch>=1.11.0",
+    "scikit-learn",
+    "scipy",
+    "huggingface-hub>=0.20.0",
+    "Pillow"
+]
+
+[project.urls]
+Homepage = "https://www.SBERT.net"
+Repository = "https://github.com/UKPLab/sentence-transformers/"
+
+
+[project.optional-dependencies]
+train = ["datasets", "accelerate>=0.20.3"]
+onnx = ["optimum[onnxruntime]>=1.23.1"]
+onnx-gpu = ["optimum[onnxruntime-gpu]>=1.23.1"]
+openvino = ["optimum-intel[openvino]>=1.20.0"]
+dev = ["datasets", "accelerate>=0.20.3", "pre-commit", "pytest", "pytest-cov", "peft"]
+
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["sentence_transformers*"]
+namespaces = false
+
+[tool.ruff]
+line-length = 119
+fix = true
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP"]
+# Skip `E731` (do not assign a lambda expression, use a def)
+ignore = [
+    # LineTooLong
+    "E501",
+    # DoNotAssignLambda
+    "E731"
+]
+
+[tool.ruff.lint.per-file-ignores]
+"examples/**" = [
+    # Ignore `E402` (import violations) in all examples
+    "E402", 
+    # Ignore missing required imports
+    "I002"
+    ]
+"docs/**" = [
+    # Ignore missing required imports
+    "I002"
+    ]
+
+[tool.ruff.lint.isort]
+known-third-party = ["datasets"]
+required-imports = ["from __future__ import annotations"]
+
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests"
+]
+addopts = "--strict-markers -m 'not slow'"
+markers = [
+    "slow: marks tests as slow"
+]
